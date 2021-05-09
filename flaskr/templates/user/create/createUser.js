@@ -25,7 +25,6 @@ var modalContainer = $("#modalContainer");
 $( function() {
   $("#registerForm").submit(function(e) {
     e.preventDefault();
-    modalContainer.modal("hide");
   })
 
   $("#submitUser").click(function(e) {
@@ -49,7 +48,9 @@ $( function() {
         }).done(function(data) { 
           console.log(data);
           console.log(e);
-          console.log(modalContainer.modal("hide"));
+          setTimeout(() => {
+            modalContainer.modal("hide");
+          },2000);
         });
   });
 });
