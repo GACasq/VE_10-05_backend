@@ -20,10 +20,16 @@ $( "#submitUser" ).submit(function( event ) {
 });*/
   
 var server = "http://127.0.0.1:5000";
+var modalContainer = $("#modalContainer");
 
 $( function() {
-  $( "#submitUser" ).click(function() {
-        var appdir='/register';
+  $("#registerForm").submit(function(e) {
+    e.preventDefault();
+    modalContainer.modal("hide");
+  })
+
+  $("#submitUser").click(function(e) {
+        var appdir='/auth/register';
 
         var userJSON = {
           "username": $("#login").val(),
@@ -42,7 +48,8 @@ $( function() {
             dataType: 'json'
         }).done(function(data) { 
           console.log(data);
-          console.log("Deu certo!");
+          console.log(e);
+          console.log(modalContainer.modal("hide"));
         });
   });
 });

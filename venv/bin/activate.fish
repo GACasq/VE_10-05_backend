@@ -29,7 +29,7 @@ end
 # unset irrelevant variables
 deactivate nondestructive
 
-set -gx VIRTUAL_ENV "/home/gustavo/Desktop/Computação_IME/7º_Período/LabProgIII/front_davi/LabProg-SA/venv"
+set -gx VIRTUAL_ENV "/home/gustavotestoni/Desktop/Gcasq/VE_10-05_backend/venv"
 
 set -gx _OLD_VIRTUAL_PATH $PATH
 set -gx PATH "$VIRTUAL_ENV/bin" $PATH

@@ -1,9 +1,7 @@
 import os
 
 from flask import Flask
-from flask import (
-    Blueprint, flash, g, redirect, render_template, request, session, url_for
-)
+
 def create_app(test_config=None):
     # create and configure the app
     app = Flask(__name__, instance_relative_config=True)
@@ -31,13 +29,8 @@ def create_app(test_config=None):
         return 'Hello, World!'
 
 
-    @app.route('/register', methods=('GET', 'POST'))
-    def register():
-        if request.method == 'POST':
-            print(request.form)
-            for key in request.form.keys():
-                print(key)
-            return "deu certo!"
+    from . import auth
+    app.register_blueprint(auth.bp)
 
 
     """from . import db
