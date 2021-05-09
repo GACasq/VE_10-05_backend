@@ -4,6 +4,7 @@ from flask import Flask
 from flask import (
     Blueprint, flash, g, redirect, render_template, request, session, url_for
 )
+
 def create_app(test_config=None):
     # create and configure the app
     app = Flask(__name__, instance_relative_config=True)
@@ -39,15 +40,7 @@ def create_app(test_config=None):
                 print(key)
             return "deu certo!"
 
-
-    """from . import db
-    db.init_app(app)
-
     from . import auth
     app.register_blueprint(auth.bp)
-
-    from . import docs
-    app.register_blueprint(docs.bp)
-    app.add_url_rule('/', endpoint='index')"""
 
     return app

@@ -1,5 +1,5 @@
 import functools
-
+import json
 from flask import (
     Blueprint, flash, g, redirect, render_template, request, session, url_for
 )
@@ -8,15 +8,28 @@ from werkzeug.security import check_password_hash, generate_password_hash
 from flaskr.db import get_db
 
 bp = Blueprint('auth', __name__, url_prefix='/auth')
+
+@bp.route('/register', methods=('GET', 'POST'))
+def register():
+  if request.method == 'POST':
+    print("oioioi")
+    print(request.form)
+    for key in request.form.keys():
+        print(key)
+        print(type(key))
+        result = eval(key)
+        print(type(result))
+        print(result["username"])
+    return "deu certo!"
+
 """
 @bp.route('/register', methods=('GET', 'POST'))
 def register():
   if request.method == 'POST':
 
-    print(request.form)"""
+    print(request.form)
 
 
-    """
     username = request.form['username']
     first_name = request.form['first_name']
     last_name = request.form['last_name']
@@ -26,11 +39,9 @@ def register():
     first_name = request.form['nome']
     last_name = request.form['sobrenome']
     birth_date = request.form['nascimento']
-    password = request.form['senha']"""
+    password = request.form['senha']
 
 
-
-"""
     db = get_db()
     error = None
 
@@ -59,7 +70,7 @@ def register():
 
     flash(error)
   return render_template('user/create/createUser.html')
-  """
+"""
 
 @bp.route('/login', methods=('GET', 'POST'))
 def login():
