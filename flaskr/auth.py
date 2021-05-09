@@ -6,11 +6,14 @@ from flask import (
 )
 from werkzeug.security import check_password_hash, generate_password_hash
 
-from flaskr.db import get_db
-
 bp = Blueprint('auth', __name__, url_prefix='/auth')
 
-from . import db
+import pymongo
+myclient = pymongo.MongoClient("mongodb+srv://limarcospap:cQ6oyLLGIukkPvnd@cluster0.gahcw.mongodb.net/test?authSource=admin&replicaSet=atlas-708nws-shard-0&readPreference=primary&appname=MongoDB%20Compass&ssl=true")
+mydb = myclient["labprog"]
+users_col = mydb["usuarios"]
+
+
 
 @bp.route('/register', methods=('GET', 'POST'))
 def register():
@@ -22,8 +25,7 @@ def register():
     print(data)
     data_dic=json.loads(data)
     print(type(data_dic))
-    #db.dbMongo.create()
-    mycol.insert_one(data_dic)
+    users_col.insert_one(data_dic)
     resp = jsonify(data_dic)
     resp.headers['Access-Control-Allow-Origin']='*'
 
@@ -31,9 +33,18 @@ def register():
   else:
     abort(404)
 
-
+@bp.route('/findall')
+def findall():
+  for x in users_col.find():
+    print(x)
+  return "Deu certo"
       
-    
+@bp.route('/insert_one')
+def insertall():
+  json_obj = {'nome': 'Gustavo', 'sobrenome': 'Testoni', 'nascimento': '15/02/1997', 'login': 'gcasq', 'senha': '123456', 'admin': True}
+  x = users_col.insert_one(json_obj)
+
+  return "deu certo"
 
 
 
