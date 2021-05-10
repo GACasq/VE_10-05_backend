@@ -26,18 +26,16 @@ def register():
     data_dic=json.loads(data)
     print(type(data_dic))
     users_col.insert_one(data_dic)
-    resp = jsonify(data_dic)
-    resp.headers['Access-Control-Allow-Origin']='*'
-
-    return resp
+    return "deu certo"
   else:
     abort(404)
 
 @bp.route('/findall')
 def findall():
+  resp = ""
   for x in users_col.find():
-    print(x)
-  return "Deu certo"
+    resp = resp + str(x)+"\n"
+  return resp
       
 @bp.route('/insert_one')
 def insertall():

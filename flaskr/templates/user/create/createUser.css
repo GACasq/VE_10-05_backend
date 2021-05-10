@@ -1,4 +1,9 @@
-.button {
+.btnContainer {
     padding: 10px;
     display: block;
+}
+
+.btnContainer button {
+    width: 100%;
+    height: 100%;
 }
