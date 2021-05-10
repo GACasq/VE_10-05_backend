@@ -3,9 +3,9 @@ $(function() {
     var navbar = $("#navbarContainer");
     var footer = $("#footerContainer");
     
-    body.load("./document/search/search.html");
-    navbar.load("./components/navbar/navbar.html");
-    footer.load("./components/footer/footer.html");
+    body.load("/search");
+    navbar.load("/navbar");
+    footer.load("/footer");
 });
 
 var openModal = function modalService(div, url, title, bodyURL){

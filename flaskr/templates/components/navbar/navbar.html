@@ -1,9 +1,9 @@
-<script src="/components/navbar/navbar.js"></script>
+<script src="{{url_for('static', filename='js/navbar.js')}}"></script>
 
 <nav class="navbar navbar-expand-lg navbar-light bg-light d-flex shadow-sm">
   <div class="container-fluid">
     <a class="navbar-brand" href="#">
-        <img src="../../assets/portal_logo.png" width="100">
+        <img src="{{url_for('static', filename='assets/portal_logo.png')}}" width="100">
     </a>
 
     <form id="loginForm" class="d-flex">

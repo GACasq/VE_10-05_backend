@@ -18,7 +18,7 @@ $(function() {
         e.preventDefault();
         console.log("depois do prevent");
         if($("#loginInput").val() && $("#passwordInput").val()){
-            var server = "http://127.0.0.1:5000";
+            var server = "http://127.0.0.1:8081";
             var appdir='/auth/login';
             console.log("chegou aqui");
             var userJSON = {

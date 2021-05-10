@@ -67,12 +67,13 @@ def login():
             print(error)
 
         if error is None:
-            #session.clear()
-            #session['user_id'] = user['_id']
-            #session['admin'] = user['admin']
-            resp = jsonify("true")
-            resp.headers['Access-Control-Allow-Origin']='*'
-            return resp
+            session.clear()
+            session['user_id'] = user['_id']
+            session['admin'] = user['admin']
+            return home()
+            #resp = jsonify("true")
+            #resp.headers['Access-Control-Allow-Origin']='*'
+            #return resp
         flash(error)
     return "False"
 
