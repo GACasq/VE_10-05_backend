@@ -13,9 +13,7 @@ myclient = pymongo.MongoClient("mongodb+srv://limarcospap:cQ6oyLLGIukkPvnd@clust
 mydb = myclient["labprog"]
 users_col = mydb["usuarios"]
 
-
-
-@bp.route('/register', methods=('GET', 'POST'))
+@bp.route('/register', methods=('GET', 'POST')) #fazer o login ser unico
 def register():
   if request.method == 'POST':
     rf = request.form
@@ -23,8 +21,10 @@ def register():
     for key in rf.keys():
         data=key
     print(data)
+    print(type(data))
     data_dic=json.loads(data)
     print(type(data_dic))
+    data_dic['senha'] = generate_password_hash(data_dic['senha'])
     users_col.insert_one(data_dic)
     return "deu certo"
   else:
@@ -39,69 +39,42 @@ def findall():
       
 @bp.route('/insert_one')
 def insertall():
-  json_obj = {'nome': 'Gustavo', 'sobrenome': 'Testoni', 'nascimento': '15/02/1997', 'login': 'gcasq', 'senha': '123456', 'admin': True}
+  json_obj = {'nome': 'Gustavo', 'sobrenome': 'Testoni', 'nascimento': '15/02/1997', 'login': 'gcasq', 'senha': '123456', 'admin': true}
   x = users_col.insert_one(json_obj)
-
   return "deu certo"
-
-
-
-
-"""
-    db = get_db()
-    error = None
-
-    if not username:
-      error = 'Username is required.'
-    elif not password:
-      error = 'Password is required.'
-    elif not birth_date:
-      error = 'Birth date is required.'
-    elif not first_name:
-      error = 'First name is required.'
-    elif password is not request.form['confirmacao-senha']:
-      error = 'Password confirmation failed'
-    elif db.execute(
-      'SELECT id FROM user WHERE username = ?', (username,)
-    ).fetchone() is not None:
-      error = 'User {} is already registered.'.format(username)
-
-    if error is None:
-      db.execute(
-        'INSERT INTO user (username, first_name, last_name, birth_date, password) VALUES (?, ?, ?, ?, ?)',
-        (username, first_name, last_name, birth_date, generate_password_hash(password))
-      )
-      db.commit()
-      return redirect(url_for('auth.login'))
-
-    flash(error)
-  return render_template('user/create/createUser.html')
-  """
 
 @bp.route('/login', methods=('GET', 'POST'))
 def login():
     if request.method == 'POST':
-        username = request.form['loginInput']
-        password = request.form['passwordInput']
-        db = get_db()
-        error = None
-        user = db.execute(
-            'SELECT * FROM user WHERE username = ?', (username,)
-        ).fetchone()
+        print("Chegou no back")
+        rf = request.form
+        print(rf)
+        for key in rf.keys():
+            data=key
+            print(data)
+            data_dic=json.loads(data)
 
+        error = None
+        user = users_col.find_one({"login": data_dic["login"]})
+        print(user)
+        print("")
+        print(data_dic)
         if user is None:
-            error = 'Incorrect username.'
-        elif not check_password_hash(user['password'], password):
+            error = 'Inexistent username.'
+            print(error)
+        elif not check_password_hash(user["senha"], data_dic["senha"]):
             error = 'Incorrect password.'
+            print(error)
 
         if error is None:
-            session.clear()
-            session['user_id'] = user['id']
-            return redirect(url_for('index.html'))
-
+            #session.clear()
+            #session['user_id'] = user['_id']
+            #session['admin'] = user['admin']
+            resp = jsonify("true")
+            resp.headers['Access-Control-Allow-Origin']='*'
+            return resp
         flash(error)
-
-    return render_template('index.html')
+    return "False"
 
 @bp.before_app_request
 def load_logged_in_user():
