@@ -42,9 +42,9 @@ def uploadPfc():
       data_dic[key] = request.form[key]
 
     with open(data_dic['myfile'], "rb") as pdf_file:
-        if pdf_file.read()[0:4] != b'%PDF':
-          raise ValueError('Missing the PDF file signature')
-          return "Documento não é um pdf"
+      if pdf_file.read()[0:4] != b'%PDF':
+        raise ValueError('Missing the PDF file signature')
+        return "Documento não é um pdf"
       encoded_string = base64.b64encode(pdf_file.read())
     data_dic['pdfB64'] = encoded_string
     documents_col.insert_one(data_dic)
