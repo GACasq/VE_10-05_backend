@@ -3,9 +3,9 @@ $(function() {
     var modalContainer = $("#modalContainer");
     var logoutBtn = $("#logoutBtn");
     var addUserBtn = $("#addUserBtn");
+    var loginForm = $("#loginForm");
 
     logoutBtn.on("click", function(){
-        console.log("Logout")
         $.ajax({
             type: "GET",
             url: "/auth/logout",
@@ -16,4 +16,36 @@ $(function() {
     addUserBtn.on("click", function(){
         openModal(modalContainer, "/modal", "Cadastrar Usuário", "/create-user");
     });
+
+    loginForm.on("submit", function(e){
+        e.preventDefault()
+        var loginInput = $("#loginInput")
+        var passwordInput = $("#passwordInput")
+
+        var formData = {
+            login: $("#loginInput").val(),
+            senha: $("#passwordInput").val()
+        }
+
+        $.ajax({
+            type : 'POST',
+            url : '/auth/login',
+            data: formData,
+            dataType: "json",
+            encode: true,
+            success : function (response) {
+                location.reload()
+            },
+            error : function (err) {
+                var errMsg = err.responseJSON["error"]
+                if(errMsg == "username") {
+                    loginInput.addClass("is-invalid")
+                    passwordInput.removeClass("is-invalid")
+                }else if(errMsg == "password") {
+                    passwordInput.addClass("is-invalid")
+                    loginInput.removeClass("is-invalid")
+                }
+            }
+        })
+    })
 });
