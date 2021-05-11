@@ -26,6 +26,11 @@
     </form>
     {% endif %}
   </div>
+  {% if g.loginError %}
+  <div class="alert alert-primary" role="alert">
+    Login ou senha incorretos!
+  </div>
+  {% endif %}
 </nav>         
 
 <div class="modal fade" id="modalContainer" role="dialog" aria-hidden="true"></div>

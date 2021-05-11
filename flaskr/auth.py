@@ -45,10 +45,12 @@ def login():
 
         if user is None:
             error = 'Inexistent username.'
-            print(error)
+            g.loginError = True
+          
         if not check_password_hash(user["senha"], request.form["senha"]):
             error = 'Incorrect password.'
-            print(error)
+            g.loginError = True
+            
 
         if error is None:
             session.clear()
@@ -56,9 +58,8 @@ def login():
             print(user['admin'])
             session['user_id'] = str(user['_id'])
             session['admin'] = user['admin']
-            return redirect(url_for('home'))
         #flash(error)
-    return "False"
+    return  #redirect(url_for('home'))
 
 @bp.before_app_request
 def load_logged_in_user():
