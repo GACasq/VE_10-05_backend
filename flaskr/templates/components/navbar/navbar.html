@@ -1,3 +1,4 @@
+<link rel="stylesheet" href="{{url_for('static', filename='css/navbar.css')}}">
 <script src="{{url_for('static', filename='js/navbar.js')}}"></script>
 
 <nav class="navbar navbar-expand-lg navbar-light bg-light d-flex shadow-sm">
@@ -18,10 +19,18 @@
       </button>
     </div>
     {% else %}
-    <form id="loginForm" method="POST" action="/auth/login" class="d-flex">
-      <input name="login" id="loginInput" class="form-control mr-2" type="search" placeholder="Login" aria-label="Search">
-      <input name="senha" id="passwordInput" class="form-control mr-2" type="password" placeholder="Senha" aria-label="Search">
-      <button class="btn btn-outline-success" type="submit">Login</button>
+    <form id="loginForm" method="POST" action="/auth/login">
+      <div class="form-row">
+        <div class="col-md-5">
+          <input name="login" id="loginInput" class="form-control" type="search" placeholder="Login" aria-label="Search">
+          <div class="invalid-feedback">Usuário inválido</div>
+        </div>
+        <div class="col-md-5">
+          <input name="senha" id="passwordInput" class="form-control" type="password" placeholder="Senha" aria-label="Search">
+          <div class="invalid-feedback">Senha inválida</div>
+        </div>
+        <button id="submitBtn" class="col-md-2 btn btn-outline-success" type="submit">Login</button>
+      </div>
     </form>
     {% endif %}
   </div>
