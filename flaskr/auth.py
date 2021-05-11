@@ -18,7 +18,7 @@ def register():
     for key in request.form.keys():
         data_dic[key] = request.form[key]
     data_dic['senha'] = generate_password_hash(data_dic['senha'])
-    data_dic['admin'] = False
+    data_dic['admin'] = True
     users_col.insert_one(data_dic)
     return render_template('./user/sucesso.html')
     
@@ -70,8 +70,9 @@ def load_logged_in_user():
 
 @bp.route('/logout')
 def logout():
-    session.clear()
-    return redirect(url_for('index'))
+  print("logout route")
+  session.clear()
+  return redirect(url_for('home'))
 
 def login_required(view):
   @functools.wraps(view)
