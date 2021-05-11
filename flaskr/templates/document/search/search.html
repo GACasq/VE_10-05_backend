@@ -1,7 +1,8 @@
 <script type="application/javascript" src="{{url_for('static', filename='js/search.js')}}"></script>
 <link rel="stylesheet" href="{{url_for('static', filename='css/search.css')}}">
 
-<div class="container">
+<div class="searchContainer">
+    {% if session.get("user_id") %}
     <div class="d-flex justify-content-around row mt-2">
         <div class="col-9">
             <input class="form-control" type="text" placeholder="Pesquisa de documentos">
@@ -42,4 +43,11 @@
     </table>
     
     <div class="modal fade" id="modalContainer" role="dialog" aria-hidden="true"></div>
+    {% else %}
+    <div id="blockAccess">
+        <i class="bi bi-file-earmark-lock2" id="lock"></i>
+        <h1>Acesso não autorizado!</h1>
+        <h2>Efetue Login</h2>
+    </div>
+    {% endif %}
 </div> 
