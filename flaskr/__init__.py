@@ -34,9 +34,7 @@ def create_app(test_config=None):
 
     @app.route('/')
     def home():
-            return render_template('./index.html')
-       
-
+            return render_template('./index.html')   
     @app.route('/footer')
     def footer():
         return render_template('./components/footer/footer.html')
@@ -70,6 +68,7 @@ def create_app(test_config=None):
     from . import auth
     app.register_blueprint(auth.bp)
 
-    from . import db
+    from . import document
+    app.register_blueprint(document.bp)
 
     return app

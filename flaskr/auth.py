@@ -9,8 +9,8 @@ bp = Blueprint('auth', __name__, url_prefix='/auth')
 
 import pymongo
 myclient = pymongo.MongoClient("mongodb+srv://limarcospap:cQ6oyLLGIukkPvnd@cluster0.gahcw.mongodb.net/test?authSource=admin&replicaSet=atlas-708nws-shard-0&readPreference=primary&appname=MongoDB%20Compass&ssl=true")
-mydb = myclient["labprog"]
-users_col = mydb["usuarios"]
+bd = myclient["labprog"]
+users_col = bd["usuarios"]
 
 @bp.route('/register', methods=(['POST'])) #fazer o login ser unico
 def register():
@@ -39,18 +39,16 @@ def insertall():
 @bp.route('/login', methods=('GET', 'POST'))
 def login():
     if request.method == 'POST':
-        rf = request.form
         error = None
         user = users_col.find_one({"login": request.form["login"]})
+        g.loginError = True
 
         if user is None:
             error = 'Inexistent username.'
-            g.loginError = True
-          
-        if not check_password_hash(user["senha"], request.form["senha"]):
+            return error
+        elif not check_password_hash(user["senha"], request.form["senha"]):
             error = 'Incorrect password.'
-            g.loginError = True
-            
+            return error
 
         if error is None:
             session.clear()
@@ -58,8 +56,7 @@ def login():
             print(user['admin'])
             session['user_id'] = str(user['_id'])
             session['admin'] = user['admin']
-        #flash(error)
-    return  #redirect(url_for('home'))
+            return redirect(url_for('home'))
 
 @bp.before_app_request
 def load_logged_in_user():
