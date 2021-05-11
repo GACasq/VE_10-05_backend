@@ -1,6 +1,8 @@
 $(function() {
     console.log("Search Component!");
     
+    updateData();
+    
     var docsTable = $("#docsTable");
     var modalContainer = $("#modalContainer");
     var addBtn = $("#addBtn");
@@ -20,3 +22,33 @@ $(function() {
         openModal(modalContainer, "/modal", `${name}`, "/manage-document");
     });
 });
+
+
+function updateData(){
+    $.ajax({
+        type : 'GET',
+        url : '/document/get-pfc',
+        success : function (response) {
+            let documents = JSON.parse(response);
+            console.log(documents);
+            var tableBody = $("#tableBody");
+            tableBody.empty();
+            for (let document of documents){
+                console.log(document);
+                tableBody.append(renderElement(document['nome'], document['data']));
+            }
+        },
+        error : function (err) {
+            console.log(err)
+        }
+    })
+}
+
+function renderElement(name, date){  
+   return `
+    <tr>
+            <td>${name}</td>
+            <td>${date}</td>
+    </tr>
+   `
+}

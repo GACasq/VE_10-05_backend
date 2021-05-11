@@ -14,13 +14,13 @@ bp = Blueprint('document', __name__, url_prefix='/document')
 
 @bp.route('/get-pfc', methods=(['GET','POST'])) 
 def getPfc():
-  documents = documents_col.find({"titulo": request.form['titulo']}) #query baseada no titulo
-  doc = {}
-  for key in request.form.keys():
-    data_dic[key] = request.form[key]  #salva aqui os dados do pdf
-  if (doc != {}):
-    return doc
-  return "Document not found"
+  cursor = documents_col.find()
+  list_cursor = list(cursor)
+
+  for obj in list_cursor:
+      obj['_id'] = str(obj['_id'])
+
+  return  json.dumps(list_cursor), 200, {'ContentType': 'application/json'}
 
 @bp.route('/download-pfc', methods=(['GET','POST']))   #linkar esta rota a um botão de download para cada registro de documento encontrado pela query da rota /get-pfc
 def download():
@@ -49,3 +49,4 @@ def uploadPfc():
     data_dic['pdfB64'] = encoded_string
     documents_col.insert_one(data_dic)
     return "sucesso"
+
