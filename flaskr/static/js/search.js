@@ -30,11 +30,9 @@ function updateData(){
         url : '/document/get-pfc',
         success : function (response) {
             let documents = JSON.parse(response);
-            console.log(documents);
             var tableBody = $("#tableBody");
             tableBody.empty();
             for (let document of documents){
-                console.log(document);
                 tableBody.append(renderElement(document['nome'], document['data']));
             }
         },

@@ -22,6 +22,9 @@ $(function() {
         var loginInput = $("#loginInput")
         var passwordInput = $("#passwordInput")
 
+        var btn = $("#submitBtn")
+        btn.addClass("disabled")
+
         var formData = {
             login: $("#loginInput").val(),
             senha: $("#passwordInput").val()
@@ -33,9 +36,7 @@ $(function() {
             data: formData,
             dataType: "json",
             encode: true,
-            success : function (response) {
-                location.reload()
-            },
+            success : () => location.reload(),
             error : function (err) {
                 var errMsg = err.responseJSON["error"]
                 if(errMsg == "username") {
@@ -45,7 +46,10 @@ $(function() {
                     passwordInput.addClass("is-invalid")
                     loginInput.removeClass("is-invalid")
                 }
+                btn.removeClass("disabled")
             }
         })
+
+        return false
     })
 });

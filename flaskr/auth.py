@@ -18,11 +18,15 @@ def register():
     data_dic = {}
     for key in request.form.keys():
         data_dic[key] = request.form[key]
+
     data_dic['senha'] = generate_password_hash(data_dic['senha'])
-    data_dic['admin'] = True
-    users_col.insert_one(data_dic)
-    return render_template('./user/sucesso.html')
+    data_dic['admin'] = data_dic['admin'] == 'true'
     
+    try:
+      users_col.insert_one(data_dic)
+      return json.dumps({'success': True}), 200, {'ContentType': 'application/json'} 
+    except(e):
+      return json.dumps(e), 500, {'ContentType': 'application/json'}
 
 @bp.route('/findall')
 def findall():
@@ -52,7 +56,7 @@ def login():
   if error is None:
     session.clear()
     session['user_id'] = str(user['_id'])
-    session['admin'] = user['admin']
+    session['admin'] = bool(user['admin'])
     return json.dumps({'success': True}), 200, {'ContentType': 'application/json'} 
     
   return json.dumps({'error': error}), 403, {'ContentType': 'application/json'}
