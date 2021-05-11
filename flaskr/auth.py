@@ -4,6 +4,7 @@ from flask import (
     Blueprint, flash, g, redirect, render_template, request, session, url_for, abort, jsonify
 )
 from werkzeug.security import check_password_hash, generate_password_hash
+import time
 
 bp = Blueprint('auth', __name__, url_prefix='/auth')
 
@@ -36,27 +37,26 @@ def insertall():
   x = users_col.insert_one(json_obj)
   return "deu certo"
 
-@bp.route('/login', methods=('GET', 'POST'))
+@bp.route('/login', methods=(['POST']))
 def login():
-    if request.method == 'POST':
-        error = None
-        user = users_col.find_one({"login": request.form["login"]})
-        g.loginError = True
+  error = None
+  user = users_col.find_one({"login": request.form["login"]})
 
-        if user is None:
-            error = 'Inexistent username.'
-            return error
-        elif not check_password_hash(user["senha"], request.form["senha"]):
-            error = 'Incorrect password.'
-            return error
+  if user is None:
+    error = 'username'
+    g.loginError = True
+  elif not check_password_hash(user["senha"], request.form["senha"]):
+    error = 'password'
+    g.loginError = True
+      
+  if error is None:
+    session.clear()
+    session['user_id'] = str(user['_id'])
+    session['admin'] = user['admin']
+    return json.dumps({'success': True}), 200, {'ContentType': 'application/json'} 
+    
+  return json.dumps({'error': error}), 403, {'ContentType': 'application/json'}
 
-        if error is None:
-            session.clear()
-            print(user['_id'])
-            print(user['admin'])
-            session['user_id'] = str(user['_id'])
-            session['admin'] = user['admin']
-            return redirect(url_for('home'))
 
 @bp.before_app_request
 def load_logged_in_user():
@@ -68,7 +68,6 @@ def load_logged_in_user():
 
 @bp.route('/logout')
 def logout():
-  print("logout route")
   session.clear()
   return redirect(url_for('home'))
 
