@@ -11,12 +11,12 @@ $(function() {
     }
 
     addBtn.on("click", function(){
-        openModal(modalContainer, "components/modal/modal.html", "Adicionar Documento", "document/create/createDocument.html");
+        openModal(modalContainer, "/modal", "Adicionar Documento", "/create-document");
     });
 
     docsTable.on('click', 'tbody tr', function() {
         let current = $(this);
         let name = current.find("td").eq(0).html();
-        openModal(modalContainer, "components/modal/modal.html", `${name}`, "document/manage/manageDocument.html");
+        openModal(modalContainer, "/modal", `${name}`, "/manage-document");
     });
 });

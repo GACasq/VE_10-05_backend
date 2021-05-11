@@ -21,7 +21,7 @@ def index():
     return render_template('index.html', posts=posts)
 
 
-@bp.route('/upload', methods=('GET', 'POST'))
+@bp.route('/upload', methods=('POST'))
 @login_required
 def upload():
     if request.method == 'POST':

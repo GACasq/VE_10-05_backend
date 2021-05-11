@@ -2,7 +2,7 @@ var setCookie = function setAuthCookie(option){
     if(option){
         document.cookie = "auth=SUP3Rs3cUr3T0K3N";
     }else{
-        document.cookie = "auth="
+        document.cookie = "session=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;"
     }
 };
 

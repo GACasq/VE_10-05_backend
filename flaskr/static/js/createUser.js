@@ -1,11 +1,13 @@
 var server = "http://127.0.0.1:5000";
 var modalContainer = $("#modalContainer");
 
+/*
 $( function() {
   $("#registerForm").submit(function(e) {
     e.preventDefault();
   })
 
+  
   $("#submitUser").click(function(e) {
         var appdir='/auth/register';
 
@@ -30,4 +32,6 @@ $( function() {
           },2000);
         });
   });
+  
 });
+*/

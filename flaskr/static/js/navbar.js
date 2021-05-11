@@ -13,6 +13,7 @@ $(function() {
         userOptions.removeClass("d-none");
     };
     
+    /*
     //$("loginButton").click(function(e){
     loginForm.submit(function(e){
         e.preventDefault();
@@ -43,6 +44,7 @@ $(function() {
             })
         };
     });
+    
     /*
     $("loginButton").click(function(e){
     //loginForm.submit(function(e){
@@ -59,11 +61,10 @@ $(function() {
 
 
     logoutBtn.on("click", function(){
-        setCookie(false);
         location.reload();
     });
 
     addUserBtn.on("click", function(){
-        openModal(modalContainer, "components/modal/modal.html", "Cadastrar Usuário", "user/create/createUser.html");
+        openModal(modalContainer, "/modal", "Cadastrar Usuário", "/create-user");
     });
 });

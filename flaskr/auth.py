@@ -1,6 +1,5 @@
 import functools
 import json
-
 from flask import (
     Blueprint, flash, g, redirect, render_template, request, session, url_for, abort, jsonify
 )
@@ -13,22 +12,16 @@ myclient = pymongo.MongoClient("mongodb+srv://limarcospap:cQ6oyLLGIukkPvnd@clust
 mydb = myclient["labprog"]
 users_col = mydb["usuarios"]
 
-@bp.route('/register', methods=('GET', 'POST')) #fazer o login ser unico
+@bp.route('/register', methods=(['POST'])) #fazer o login ser unico
 def register():
-  if request.method == 'POST':
-    rf = request.form
-    print(rf)
-    for key in rf.keys():
-        data=key
-    print(data)
-    print(type(data))
-    data_dic=json.loads(data)
-    print(type(data_dic))
+    data_dic = {}
+    for key in request.form.keys():
+        data_dic[key] = request.form[key]
     data_dic['senha'] = generate_password_hash(data_dic['senha'])
+    data_dic['admin'] = False
     users_col.insert_one(data_dic)
-    return "deu certo"
-  else:
-    abort(404)
+    return render_template('./user/sucesso.html')
+    
 
 @bp.route('/findall')
 def findall():
@@ -46,47 +39,34 @@ def insertall():
 @bp.route('/login', methods=('GET', 'POST'))
 def login():
     if request.method == 'POST':
-        print("Chegou no back")
         rf = request.form
-        print(rf)
-        for key in rf.keys():
-            data=key
-            print(data)
-            data_dic=json.loads(data)
-
         error = None
-        user = users_col.find_one({"login": data_dic["login"]})
-        print(user)
-        print("")
-        print(data_dic)
+        user = users_col.find_one({"login": request.form["login"]})
+
         if user is None:
             error = 'Inexistent username.'
             print(error)
-        elif not check_password_hash(user["senha"], data_dic["senha"]):
+        if not check_password_hash(user["senha"], request.form["senha"]):
             error = 'Incorrect password.'
             print(error)
 
         if error is None:
             session.clear()
-            session['user_id'] = user['_id']
+            print(user['_id'])
+            print(user['admin'])
+            session['user_id'] = str(user['_id'])
             session['admin'] = user['admin']
-            return home()
-            #resp = jsonify("true")
-            #resp.headers['Access-Control-Allow-Origin']='*'
-            #return resp
-        flash(error)
+            return redirect(url_for('home'))
+        #flash(error)
     return "False"
 
 @bp.before_app_request
 def load_logged_in_user():
   user_id = session.get('user_id')
-
   if user_id is None:
-    g.user = None
+    g.user = False
   else:
-    g.user = get_db().execute(
-      'SELECT * FROM user WHERE id = ?', (user_id,)
-    ).fetchone()
+    g.user = users_col.find_one({"_id": user_id})
 
 @bp.route('/logout')
 def logout():

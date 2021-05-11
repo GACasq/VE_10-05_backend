@@ -34,10 +34,9 @@ def create_app(test_config=None):
 
     @app.route('/')
     def home():
-        if not session.get('user_id'):
             return render_template('./index.html')
-        else:
-            return "Hello Boss!"
+       
+
     @app.route('/footer')
     def footer():
         return render_template('./components/footer/footer.html')
@@ -47,6 +46,18 @@ def create_app(test_config=None):
     @app.route('/search')
     def search():
         return render_template('./document/search/search.html')
+    @app.route('/modal')
+    def modal():
+        return render_template('./components/modal/modal.html')
+    @app.route('/create-user')
+    def createUser():
+        return render_template('./user/create/createUser.html')
+    @app.route('/manage-document')
+    def manageDocument():
+        return render_template('./document/manage/manageDocument.html')
+    @app.route('/create-document')
+    def createDocument():
+        return render_template('./document/create/createDocument.html')
 
     @app.route('/register', methods=('GET', 'POST'))
     def register():

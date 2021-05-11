@@ -6,21 +6,25 @@
         <img src="{{url_for('static', filename='assets/portal_logo.png')}}" width="100">
     </a>
 
-    <form id="loginForm" class="d-flex">
-      <input id="loginInput" class="form-control mr-2" type="search" placeholder="Login" aria-label="Search">
-      <input id="passwordInput" class="form-control mr-2" type="password" placeholder="Senha" aria-label="Search">
-      <button class="btn btn-outline-success" type="submit">Login</button>
-    </form>
-
-    <div id="userOptions" class="d-none">
+    {% if session.get("user_id") %}
+    <div id="userOptions" >
+      {% if session.get("admin") %}
       <button id="addUserBtn" class="btn btn-outline-success mx-1" type="button">
         <i class="bi bi-person-plus"></i>
       </button>
-  
+      {% endif %}
       <button id="logoutBtn" class="btn btn-outline-success mx-1" type="button">
         <i class="bi bi-box-arrow-right"></i>
       </button>
     </div>
+
+    {% else %}
+    <form id="loginForm" method="POST" action="/auth/login" class="d-flex">
+      <input name="login" id="loginInput" class="form-control mr-2" type="search" placeholder="Login" aria-label="Search">
+      <input name="senha" id="passwordInput" class="form-control mr-2" type="password" placeholder="Senha" aria-label="Search">
+      <button class="btn btn-outline-success" type="submit">Login</button>
+    </form>
+    {% endif %}
   </div>
 </nav>         
 
