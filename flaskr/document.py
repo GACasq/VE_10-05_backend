@@ -12,6 +12,11 @@ bp = Blueprint('document', __name__, url_prefix='/document')
 
 @bp.route('/get-pfc', methods=(['GET','POST'])) 
 def getPfc():
-  documents = documents_col.find()
-  resp = ""
-  return "sucesso"
+
+  cursor = documents_col.find()
+  list_cursor = list(cursor)
+
+  for obj in list_cursor:
+      obj['_id'] = str(obj['_id'])
+
+  return  json.dumps(list_cursor), 200, {'ContentType': 'application/json'}

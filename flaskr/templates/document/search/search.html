@@ -22,23 +22,17 @@
                 Data de envio
             </th>
         </thead>
-        <tbody>
+        <tbody id="tableBody">
+            {% for document in g.user['documents']%}
             <tr>
                 <td>
-                    PFC do Serginho
+                   {{ document['titulo'] }} 
                 </td>
                 <td>
-                    10/12/2022
+                    {{ document['data'] }}
                 </td>
             </tr>
-            <tr>
-                <td>
-                    PFC do Marquito
-                </td>
-                <td>
-                    11/11/2022
-                </td>
-            </tr>
+            {% endfor %}
         </tbody>
     </table>
     
