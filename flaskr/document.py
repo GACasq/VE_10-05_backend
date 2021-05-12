@@ -7,7 +7,7 @@ import pymongo
 import base64
 from werkzeug.utils import secure_filename
 import os
-
+import errno
 
 myclient = pymongo.MongoClient("mongodb+srv://limarcospap:cQ6oyLLGIukkPvnd@cluster0.gahcw.mongodb.net/test?authSource=admin&replicaSet=atlas-708nws-shard-0&readPreference=primary&appname=MongoDB%20Compass&ssl=true")
 bd = myclient["labprog"]
@@ -15,7 +15,8 @@ documents_col = bd["documentos"]
 
 bp = Blueprint('document', __name__, url_prefix='/document')
 
-UPLOAD_FOLDER = '/home/marcos/VE_10-05_backend/files'
+DIR_PATH = os.path.dirname(os.path.realpath(__file__))
+UPLOAD_FOLDER = os.path.join(DIR_PATH, "files")
 
 @bp.route('/get-pfc', methods=(['GET','POST'])) 
 def getPfc():
@@ -55,7 +56,11 @@ def uploadPfc():
 def uploadPfcFile():
     file = request.files['file']
     filename = secure_filename(file.filename)
-    file.save(os.path.join(UPLOAD_FOLDER, filename))
+
+    filepath = os.path.join(UPLOAD_FOLDER, filename)
+    
+    os.makedirs(os.path.dirname(filepath), exist_ok=True)
+    file.save(filepath)
 
     return "sucesso", 200
 
