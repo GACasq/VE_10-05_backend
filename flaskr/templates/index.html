@@ -1,4 +1,4 @@
-<html>
+<html style="height: 100%; margin: 0;">
 	<head>
     <meta charset="UTF-8">
 		<title>IME</title>
@@ -19,11 +19,13 @@
 		<script src="{{url_for('static', filename='js/index.js')}}"></script>
 
 	</head>
-	<body class="d-flex flex-column h-100">
-		<div id="navbarContainer"></div>
-    
-		<div id="bodyContainer" class="container my-3" style="height: 100%;"></div>
-
-    <div id="footerContainer" class="mt-auto"></div>
+	<body class="d-flex flex-column h-100" style="height: 100%; margin: 0;">
+    <div>
+      <div id="navbarContainer"></div>
+      
+      <div id="bodyContainer" class="container my-3"></div>
+  
+    </div>
+    <footer id="footerContainer" class="mt-auto"></footer>
 	</body>
 </html>

@@ -3,6 +3,7 @@
 
 <div class="searchContainer">
     {% if session.get("user_id") %}
+<<<<<<< HEAD
     <div class="d-flex justify-content-around row mt-2">
         <div class="col-9">
             <input class="form-control" type="text" placeholder="Pesquisa de documentos">
@@ -15,9 +16,23 @@
             <i class="bi bi-file-earmark-plus"></i>
         </button>
         {% endif %}
+=======
+    <div class="mt-2">
+        <form class="row justify-content-around" id="searchForm">
+            <div class="col-9">
+                <input class="form-control" type="text" placeholder="Pesquisa de documentos" id="searchInput">
+            </div>
+            <button id="searchBtn" class="btn btn-outline-success col-1" type="submit">
+                <i class="bi bi-search"></i>
+            </button>
+            <button id="addBtn" class="btn btn-outline-success col-1" type="button">
+                <i class="bi bi-plus-square"></i>
+            </button>
+        </form>
+>>>>>>> 18e04ca74932f652b66191e44aa5c98c2697d528
     </div>
 
-    <table id="docsTable" class="table table-hover mt-5">
+    <table id="docsTable" class="table table-hover mt-3">
         <thead>
             <th>Titulo do documento</th>
             <th>

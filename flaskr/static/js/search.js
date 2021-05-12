@@ -1,12 +1,14 @@
 $(function() {
     console.log("Search Component!");
     
-    updateData();
-    
     var docsTable = $("#docsTable");
     var modalContainer = $("#modalContainer");
     var addBtn = $("#addBtn");
-    var searchBtn = $("#searchBtn");
+
+
+    var searchForm = $("#searchForm");
+
+    updateData();
 
     addBtn.on("click", function(){
         openModal(modalContainer, "/modal", "Adicionar Documento", "/create-document");
@@ -17,6 +19,11 @@ $(function() {
         let name = current.find("td").eq(0).html();
         openModal(modalContainer, "/modal", `${name}`, "/manage-document");
     });
+
+    searchForm.submit(function(e) {
+        e.preventDefault();
+        searchData();
+    })
 });
 
 
@@ -24,24 +31,38 @@ function updateData(){
     $.ajax({
         type : 'GET',
         url : '/document/get-pfc',
-        success : function (response) {
-            let documents = JSON.parse(response);
-            var tableBody = $("#tableBody");
-            tableBody.empty();
-            for (let document of documents){
-                tableBody.append(renderElement(document['nome'], document['data']));
-            }
-        },
-        error : function (err) {
-            console.log(err)
-        }
+        success : (response) => renderTable(JSON.parse(response)),
+        error : (err) => console.log(err)
+        
     })
 }
 
-function renderElement(name, date){  
+function searchData(){
+    let text = $("#searchInput").val();
+    $.ajax({
+        type : 'POST',
+        url : '/document/search-pfc',
+        data: {"search": text},
+        dataType: 'json',
+        success : (response) => renderTable(response),
+        error : (err) => console.log(err)
+    })
+}
+
+function renderTable(contentArray){
+    var tableBody = $("#tableBody");
+    tableBody.empty();
+    for (let content of contentArray){
+        if(content['nome']!=null && content['data']!=null){
+            tableBody.append(renderElement(content['titulo'], content['data']));
+        }
+    }
+}
+
+function renderElement(titulo, date){  
    return `
     <tr>
-            <td>${name}</td>
+            <td>${titulo}</td>
             <td>${date}</td>
     </tr>
    `
