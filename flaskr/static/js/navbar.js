@@ -4,6 +4,7 @@ $(function() {
     var logoutBtn = $("#logoutBtn");
     var addUserBtn = $("#addUserBtn");
     var loginForm = $("#loginForm");
+    var addDocBtn = $("#addDocBtn");
 
     logoutBtn.on("click", function(){
         $.ajax({
@@ -15,6 +16,11 @@ $(function() {
 
     addUserBtn.on("click", function(){
         openModal(modalContainer, "/modal", "Cadastrar Usuário", "/create-user");
+    });
+
+
+    addDocBtn.on("click", function(){
+        openModal(modalContainer, "/modal", "Adicionar Documento", "/create-document");
     });
 
     loginForm.on("submit", function(e){

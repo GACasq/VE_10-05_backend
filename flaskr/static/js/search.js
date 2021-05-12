@@ -3,7 +3,6 @@ $(function() {
     
     var docsTable = $("#docsTable");
     var modalContainer = $("#modalContainer");
-    var addBtn = $("#addBtn");
 
     docsTable.DataTable({
         "language": {
@@ -16,10 +15,6 @@ $(function() {
             { "data": "autores" },
             { "data": "data" },
         ]
-    });
-    
-    addBtn.on("click", function(){
-        openModal(modalContainer, "/modal", "Adicionar Documento", "/create-document");
     });
 
     docsTable.on('click', 'tbody tr', function() {
@@ -57,15 +52,15 @@ function renderTable(contentArray){
     tableBody.empty();
     for (let content of contentArray){
         if(content['nome']!=null && content['data']!=null){
-            tableBody.append(renderElement(content['nome'], content['data']));
+            tableBody.append(renderElement(content['titulo'], content['data']));
         }
     }
 }
 
-function renderElement(name, date){  
+function renderElement(titulo, date){  
    return `
     <tr>
-            <td>${name}</td>
+            <td>${titulo}</td>
             <td>${date}</td>
     </tr>
    `
