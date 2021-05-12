@@ -50,3 +50,18 @@ def uploadPfc():
     documents_col.insert_one(data_dic)
     return "sucesso"
 
+@bp.route('/search-pfc', methods=(['GET','POST']))
+def searchPfc():
+  obj = {}
+  if request.method == 'GET':
+    obj = request.args
+  else:
+    obj = request.form
+
+  cursor = documents_col.find({'nome': {'$regex': obj['search'], '$options': 'i'}})
+  list_cursor = list(cursor)
+
+  for obj in list_cursor:
+      obj['_id'] = str(obj['_id'])
+
+  return  json.dumps(list_cursor), 200, {'ContentType': 'application/json'}
