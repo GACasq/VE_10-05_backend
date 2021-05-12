@@ -4,7 +4,7 @@ $(function() {
     var docsTable = $("#docsTable");
     var modalContainer = $("#modalContainer");
 
-    docsTable.DataTable({
+    tableRendered =  docsTable.DataTable({
         "language": {
             "url": "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Portuguese.json"
         },
@@ -17,10 +17,22 @@ $(function() {
         ]
     });
 
-    docsTable.on('click', 'tbody tr', function() {
-        let current = $(this);
-        let name = current.find("td").eq(0).html();
-        openModal(modalContainer, "/modal", `${name}`, "/manage-document");
+    docsTable.on('click', 'tr', function() {
+        //Dados do documento
+        let index = tableRendered.row( this ).index()
+        let titulo = tableRendered.row(index).data()["titulo"]
+        console.log(titulo)
+        let autores = tableRendered.row(index).data()["autores"]
+        let orientadores = tableRendered.row(index).data()["orientadores"]
+        let InstEns = tableRendered.row(index).data()["InstEns"]
+        let keyword = tableRendered.row(index).data()["keyword"]
+        let resumo = tableRendered.row(index).data()["resumo"]
+        let id = tableRendered.row(index).data()["_id"]
+        let url = "/manage-document?titulo="+titulo+"&autores="+autores+"&orientadores="+orientadores+"&InstEns="+InstEns+"&keyword="+keyword+"&resumo="+resumo+"&id="+id
+        //Corrigir url para retirar espaços em branco
+        let urlSanitized = url.replace(/\s/g , "%20")
+        console.log(urlSanitized)
+        openModal(modalContainer, "/modal", `${titulo}`, urlSanitized);
     });
 });
 

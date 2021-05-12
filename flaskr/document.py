@@ -4,6 +4,7 @@ from flask import (
     Blueprint, flash, g, redirect, render_template, request, session, url_for, abort, jsonify
 )
 import pymongo
+from bson.objectid import ObjectId
 import base64
 from werkzeug.utils import secure_filename
 import os
@@ -79,3 +80,17 @@ def searchPfc():
       obj['_id'] = str(obj['_id'])
 
   return  json.dumps(list_cursor), 200, {'ContentType': 'application/json'}
+
+@bp.route('/manage-pfc', methods=(['GET','POST']))
+def managePfc():
+  data_dic = {}
+  for key in request.form.keys() :
+    if key != "id":
+      data_dic[key] = request.form[key]
+  documents_col.find_one_and_update(
+    {"_id" : ObjectId(request.form["id"])},
+    {"$set":
+            data_dic
+    },upsert=True
+)
+  return "sucesso", 200
