@@ -20,7 +20,7 @@ def getPfc():
   for obj in list_cursor:
       obj['_id'] = str(obj['_id'])
 
-  return  json.dumps(list_cursor), 200, {'ContentType': 'application/json'}
+  return  {"data": list_cursor}, 200, {'ContentType': 'application/json'}
 
 @bp.route('/download-pfc', methods=(['GET','POST']))   #linkar esta rota a um botão de download para cada registro de documento encontrado pela query da rota /get-pfc
 def download():

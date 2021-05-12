@@ -4,9 +4,19 @@ $(function() {
     var docsTable = $("#docsTable");
     var modalContainer = $("#modalContainer");
     var addBtn = $("#addBtn");
-    var searchForm = $("#searchForm");
 
-    updateData();
+    docsTable.DataTable({
+        "language": {
+            "url": "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Portuguese.json"
+        },
+        "ajax": "/document/get-pfc",
+        "columns": [
+            { "data": "titulo" },
+            { "data": "tipo" },
+            { "data": "autores" },
+            { "data": "data" },
+        ]
+    });
     
     addBtn.on("click", function(){
         openModal(modalContainer, "/modal", "Adicionar Documento", "/create-document");
@@ -17,11 +27,6 @@ $(function() {
         let name = current.find("td").eq(0).html();
         openModal(modalContainer, "/modal", `${name}`, "/manage-document");
     });
-
-    searchForm.submit(function(e) {
-        e.preventDefault();
-        searchData();
-    })
 });
 
 
