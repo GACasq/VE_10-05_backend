@@ -18,3 +18,7 @@
 .searchContainer #blockAccess h2 {
     color: rgba(0,0,0,0.6);
 }
+
+.btn-add {
+    margin-right:0;
+}

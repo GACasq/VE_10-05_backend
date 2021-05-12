@@ -8,10 +8,6 @@ $(function() {
     var addBtn = $("#addBtn");
     var searchBtn = $("#searchBtn");
 
-    if(!checkAuth()){
-        addBtn.hide();
-    }
-
     addBtn.on("click", function(){
         openModal(modalContainer, "/modal", "Adicionar Documento", "/create-document");
     });

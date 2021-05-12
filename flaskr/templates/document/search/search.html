@@ -7,12 +7,14 @@
         <div class="col-9">
             <input class="form-control" type="text" placeholder="Pesquisa de documentos">
         </div>
-        <button id="searchBtn" class="btn btn-outline-success col-1" type="submit">
+        <button id="searchBtn" class="btn btn-outline-success col-1">
             <i class="bi bi-search"></i>
         </button>
-        <button id="addBtn" class="btn btn-outline-success col-1" type="button">
-            <i class="bi bi-plus-square"></i>
+        {% if session.get("admin") %}
+        <button id="addBtn" class="btn btn-outline-success col-1">
+            <i class="bi bi-file-earmark-plus"></i>
         </button>
+        {% endif %}
     </div>
 
     <table id="docsTable" class="table table-hover mt-5">
@@ -23,16 +25,12 @@
             </th>
         </thead>
         <tbody id="tableBody">
-            {% for document in g.user['documents']%}
-            <tr>
-                <td>
-                   {{ document['titulo'] }} 
-                </td>
-                <td>
-                    {{ document['data'] }}
+            <tr> <td>
+                <div class="spinner-border m-5" role="status">
+                    <span class="sr-only">Buscando documentos...</span>
+                </div>
                 </td>
             </tr>
-            {% endfor %}
         </tbody>
     </table>
     

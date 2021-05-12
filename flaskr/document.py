@@ -5,12 +5,17 @@ from flask import (
 )
 import pymongo
 import base64
+from werkzeug.utils import secure_filename
+import os
+
 
 myclient = pymongo.MongoClient("mongodb+srv://limarcospap:cQ6oyLLGIukkPvnd@cluster0.gahcw.mongodb.net/test?authSource=admin&replicaSet=atlas-708nws-shard-0&readPreference=primary&appname=MongoDB%20Compass&ssl=true")
 bd = myclient["labprog"]
 documents_col = bd["documentos"]
 
 bp = Blueprint('document', __name__, url_prefix='/document')
+
+UPLOAD_FOLDER = '/home/marcos/VE_10-05_backend/files'
 
 @bp.route('/get-pfc', methods=(['GET','POST'])) 
 def getPfc():
@@ -37,16 +42,20 @@ def download():
 
 @bp.route('/upload-pfc', methods=(['GET','POST']))
 def uploadPfc():
+    print(request.form)
     data_dic = {}
     for key in request.form.keys():
       data_dic[key] = request.form[key]
 
-    with open(data_dic['myfile'], "rb") as pdf_file:
-      if pdf_file.read()[0:4] != b'%PDF':
-        raise ValueError('Missing the PDF file signature')
-        return "Documento não é um pdf"
-      encoded_string = base64.b64encode(pdf_file.read())
-    data_dic['pdfB64'] = encoded_string
     documents_col.insert_one(data_dic)
-    return "sucesso"
+
+    return "sucesso", 200
+
+@bp.route('/upload-pfc-file', methods=(['GET','POST']))
+def uploadPfcFile():
+    file = request.files['file']
+    filename = secure_filename(file.filename)
+    file.save(os.path.join(UPLOAD_FOLDER, filename))
+
+    return "sucesso", 200
 

@@ -2,7 +2,7 @@
 <script src="{{url_for('static', filename='js/createDocument.js')}}"></script>
 
 <div class="container">
-	<form method = "post">
+	<form  id="createDocumentForm">
 		<label for="titulo">Título:</label><br>
 		<input class="form-control" type="text" id="titulo"/>
 
@@ -33,7 +33,7 @@
 		<div class="button ">
 
 		<div class="button mt-3">
-			<button class="btn btn-outline-success me-auto" ><span>Enviar</span></button>
+			<button id="btnCreate" class="btn btn-outline-success me-auto" type="submit" ><span>Enviar</span></button>
 		</div>
 	</form>           
 </div>
